@@ -21,13 +21,20 @@ async function run() {
         const database = client.db("allProducts");
         const usersCollection = database.collection("products");
 
+        // get api
+        app.get('/products', async (req, res) => {
+            const cursor = usersCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products);
+        });
+
         // post api
         app.post('/products', async (req, res) => {
             const newProduct = req.body;
             const result = await usersCollection.insertOne(newProduct);
             // console.log(result);
             res.json(result);
-        })
+        });
 
     } finally {
         // await client.close();
